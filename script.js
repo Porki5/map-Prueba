@@ -30,7 +30,23 @@ window.onload = () => {
   document.getElementById("dataset").textContent = JSON.stringify(marketplaceData, null, 2);
 
   // Ejercicio pendiente por resolver: resultado vacío
-  const result = [];
+  const result = marketplaceData.map(seller => ({
+    ...seller,
+    sellerId: seller.sellerId,
+    sellerName: seller.sellerName,
+    orders: seller.orders.map(order =>({
+      ...order,
+      items: order.items.map(item => ({
+        ...item,
+        variant: {
+          ...item.variant,
+          price: `$${item.variant.price}`,
+          //price: "$" + item.variant.price          
+        },
+        subtotal: `$${item.variant.price * item.quantity}`,
+      }))
+    }))
+  }));
 
   // Mostrar resultado
   document.getElementById("output").textContent = JSON.stringify(result, null, 2);
